@@ -1,92 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
+         
 
-    <?php     
 
-    $cliente_vip = false;
-    $valor_compra = 320;
-    $frete = 30;
+    <?php
+    //ENTRADAS:
+    //$cliente_ativo 
+    //$assinante_clube 
+   //$cupom_ativo 
+    //$valor_pedido 
+    //$taxa_entrega 
+    //$quer_entrega 
+
+    //VARIAVEIS NOVAS
+    //$valor_pedido_final
+    //$valor_pedido_desconto
+    //$taxa_entrega_final
+
+    $cliente_ativo = false;
+    $assinante_clube = false;
     $cupom_ativo = true;
-    $primeira_compra = true;
-   
+    $valor_pedido = 180;
+    $taxa_entrega = 25;
+    $quer_entrega = true;
 
-
-    if ($cliente_vip == true){
-        $frete_final = 0;
-    } else if ($valor_compra >= 200){
-        $frete_final = $frete/2;
+    if ($cliente_ativo == false) {
+        $valor_pedido_desconto = 0;
+    } else if  ($assinante_clube == true){
+        $valor_pedido_desconto = $valor_pedido - ($valor_pedido * 0.25);
+    } else if  ($cupom_ativo == true){
+        $valor_pedido_desconto = $valor_pedido - ($valor_pedido * 0.10);
+    }  else {
+        $valor_pedido_desconto = $valor_pedido;
+    }        
+    
+    if ($cliente_ativo == true && $quer_entrega == true){
+        $taxa_entrega_final = $taxa_entrega;
     } else {
-        $frete_final = $frete;
+        $taxa_entrega_final = 0;
     }
 
-    if ($cupom_ativo == true && $primeira_compra == true) {
-        $valor_final = $valor_compra * 0.8;
-    } else if ($cupom_ativo && $valor_compra >= 300){
-        $valor_final = $valor_compra * 0.9;
-    } else{
-        $valor_final = $valor_compra;
-    }
-
+    $valor_pedido_final = $valor_pedido_desconto + $taxa_entrega_final;
     ?>
-
-    <p>Cliente é vip?
+    <p>Cliente esta ativo?
         <?php
-            if ($cliente_vip == true){
-                echo " Sim";
-            } else {
-                echo " Não";
-            }
+        if ($cliente_ativo == true){
+            echo "Sim";
+        } else {
+            echo "Não";
+        }
         ?>
     </p>
-     <p>Cupom esta ativo?
+    <p>Cupom esta ativo?
         <?php
-            if ($cupom_ativo == true){
-                echo "Sim";
-            } else {
-                echo "Não";
-            }
+        if ($cupom_ativo == true){
+            echo "Sim";
+        } else {
+            echo "Não";
+        }    
         ?>
     </p>
-    <p>É a primeira compra?
+    <p>Cliente quer entrega?
         <?php
-            if ($primeira_compra == true){
-                echo "Sim";
-            } else {
-                echo "Não";
-            }
+        if ($quer_entrega == true){
+            echo "Sim";
+        } else {
+            echo "Não";
+        }
         ?>
     </p>
-    <p>Valor original da compra: <?php echo $valor_compra; ?></p>
-    <p>Valor da compra com desconto: <?php echo $valor_final; ?></p>
-    <p>Valor original do frete: <?php echo $frete; ?></p>
-    <p>Valor final do frete: <?php echo $frete_final; ?></p>
-    <p>Valor total do pedido: <?php echo $valor_final + $frete_final; ?></p>
-
-    <p>Houve desconto na compra?
+    <p>Valor original do pedido: <?php echo $valor_pedido;?></p>
+    <p>Valor do pedido com desconto: <?php echo $valor_pedido_desconto;?></p>
+    <p>Taxa original de entrega: <?php echo $taxa_entrega;?></p>
+    <p>Taxa final de entrega: <?php echo $taxa_entrega_final;?></p>
+    <p>Valor total a pagar: <?php echo $valor_pedido_final;?></p>
+    <p>Houve desconto?
         <?php
-            if ($valor_final != $valor_compra){
-                echo "Sim";
-            } else {
-                echo "Não";
-            }
+        if ($cliente_ativo == true && $valor_pedido_desconto < $valor_pedido){
+            echo "Sim";
+        } else {
+            echo "Não";
+        }
         ?>
     </p>
-    <p>Houve desconto no frete? 
+     <p>Houve taxa de entrega?
         <?php
-            if ($frete != $frete_final){
-                echo "Sim";
-            } else {
-                echo "Não";
-            }
+        if ($taxa_entrega_final > 0){
+            echo "Sim";
+        } else {
+            echo "Não";
+        }
         ?>
     </p>
-
-
 </body>
 </html>
